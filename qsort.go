@@ -12,7 +12,7 @@ const (
 	minQsort    = 50
 	minParallel = 1000
 
-	maxGoroutines = 6
+	maxGoroutines = 8
 )
 
 func insertSort(arr []int) {
