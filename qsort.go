@@ -1,10 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"math/rand"
 	"runtime"
-	"sort"
 	"sync"
 )
 
@@ -52,19 +49,19 @@ func partition(arr []int) ([]int, []int) {
 	}
 }
 
-func seq(arr []int) {
+func seqQsort(arr []int) {
 	var prefix []int
 
 	for len(arr) >= minQsort {
 		prefix, arr = partition(arr)
 
-		seq(prefix)
+		seqQsort(prefix)
 	}
 
 	insertSort(arr)
 }
 
-func parHelper(arr []int, wg *sync.WaitGroup) {
+func parQsortHelper(arr []int, wg *sync.WaitGroup) {
 	var prefix []int
 
 	for len(arr) >= minQsort {
@@ -74,36 +71,22 @@ func parHelper(arr []int, wg *sync.WaitGroup) {
 			wg.Add(1)
 
 			go func(d []int) {
-				parHelper(d, wg)
+				parQsortHelper(d, wg)
 
 				wg.Done()
 			}(prefix)
 		} else {
-			parHelper(prefix, wg)
+			parQsortHelper(prefix, wg)
 		}
 	}
 
 	insertSort(arr)
 }
 
-func par(arr []int) {
+func parQsort(arr []int) {
 	var wg sync.WaitGroup
 
-	parHelper(arr, &wg)
+	parQsortHelper(arr, &wg)
 
 	wg.Wait()
-}
-
-func main() {
-	arr := rand.Perm(10000000)
-
-	seq(arr)
-
-	fmt.Println(sort.SliceIsSorted(arr, func(i, j int) bool { return arr[i] < arr[j] }))
-
-	arr = rand.Perm(10000000)
-
-	par(arr)
-
-	fmt.Println(sort.SliceIsSorted(arr, func(i, j int) bool { return arr[i] < arr[j] }))
 }

@@ -5,30 +5,30 @@ import (
 	"testing"
 )
 
-func benchmarkSeq(n int, b *testing.B) {
+func benchmarkQsortSeq(n int, b *testing.B) {
 	arr := rand.Perm(n)
 
 	b.ResetTimer()
 
-	seq(arr)
+	seqQsort(arr)
 }
 
-func benchmarkPar(n int, b *testing.B) {
+func benchmarkQsortPar(n int, b *testing.B) {
 	arr := rand.Perm(n)
 
 	b.ResetTimer()
 
-	par(arr)
+	parQsort(arr)
 }
 
-func BenchmarkSeq(b *testing.B) {
+func BenchmarkQsortSeq(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		benchmarkSeq(10000000, b)
+		benchmarkQsortSeq(10000000, b)
 	}
 }
 
-func BenchmarkPar(b *testing.B) {
+func BenchmarkQsortPar(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		benchmarkPar(10000000, b)
+		benchmarkQsortPar(10000000, b)
 	}
 }
